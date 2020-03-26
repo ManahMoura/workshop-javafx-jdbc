@@ -23,41 +23,41 @@ import model.entities.Department;
 import model.exceptions.ValidationException;
 import model.services.DepartmentService;
 
-public class DepartmentFormController implements Initializable{
+public class DepartmentFormController implements Initializable {
 
 	private Department entity;
-	
+
 	private DepartmentService service;
-	
+
 	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
-	
+
 	@FXML
 	private TextField txtId;
-	
+
 	@FXML
 	private TextField txtName;
-	
+
 	@FXML
 	private Label labelErrorName;
-	
+
 	@FXML
 	private Button btSave;
-	
+
 	@FXML
 	private Button btCancel;
-	
+
 	public void setDepartment(Department entity) {
 		this.entity = entity;
 	}
-	
+
 	public void setDepartmentService(DepartmentService service) {
 		this.service = service;
 	}
-	
+
 	public void subscribeDataChangeListener(DataChangeListener listener) {
 		dataChangeListeners.add(listener);
 	}
-	
+
 	@FXML
 	public void onBtSaveAction(ActionEvent event) {
 		if (entity == null) {
@@ -77,7 +77,7 @@ public class DepartmentFormController implements Initializable{
 			Alerts.showAlert("Error saving objects", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
-	
+
 	private void notifyDataChangeListeners() {
 		for (DataChangeListener listener : dataChangeListeners) {
 			listener.onDataChanged();
@@ -86,20 +86,20 @@ public class DepartmentFormController implements Initializable{
 
 	private Department getFormData() {
 		Department obj = new Department();
-		
+
 		ValidationException exception = new ValidationException("Validation error");
-		
+
 		obj.setId(utils.tryPaarseToInt(txtId.getText()));
-		
+
 		if (txtName.getText() == null || txtName.getText().trim().equals(" ")) {
 			exception.addError("name", "Field can't be empty");
 		}
 		obj.setName(txtName.getText());
-	
-		if(exception.getErrors().size() > 0) {
+
+		if (exception.getErrors().size() > 0) {
 			throw exception;
 		}
-		
+
 		return obj;
 	}
 
@@ -107,17 +107,17 @@ public class DepartmentFormController implements Initializable{
 	public void onBtCancelAction(ActionEvent event) {
 		utils.currentStage(event);
 	}
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		initializeNode();
 	}
-	
+
 	private void initializeNode() {
 		Constraints.setTextFieldInteger(txtId);
 		Constraints.setTextFieldMaxLength(txtName, 30);
 	}
-	
+
 	public void updateFormData() {
 		if (entity == null) {
 			throw new IllegalStateException("Entity was null");
@@ -125,10 +125,10 @@ public class DepartmentFormController implements Initializable{
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
 	}
-	
+
 	private void setErrorMessages(Map<String, String> errors) {
 		Set<String> fields = errors.keySet();
-		
+
 		if (fields.contains("name")) {
 			labelErrorName.setText(errors.get("name"));
 		}
