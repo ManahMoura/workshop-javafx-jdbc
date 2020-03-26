@@ -69,5 +69,5 @@ public class MainViewController implements Initializable{
 		} catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Eroor loading view", e.getMessage(), AlertType.ERROR);
 		}
-	}
+	} 
 }
